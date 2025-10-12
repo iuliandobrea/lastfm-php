@@ -2,27 +2,33 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.7.0 - TBD
+## 3.7.0 - 2025-10-12
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.7.0](https://github.com/nucleos/lastfm/milestone/12)
 
-- Nothing.
+Feature release (minor)
 
-### Deprecated
+### 3.7.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **7**
+- Total contributors: **2**
 
-### Removed
+#### dependency
 
-- Nothing.
+ - [432: Update to phpunit v12](https://github.com/nucleos/lastfm/pull/432) thanks to @core23
+ - [431: Drop support for PHP 8.2](https://github.com/nucleos/lastfm/pull/431) thanks to @core23
+ - [425: Update PHPStan packages to v2 (major)](https://github.com/nucleos/lastfm/pull/425) thanks to @renovate[bot]
+ - [423: Update dependency psalm/plugin-phpunit to ^0.19.0](https://github.com/nucleos/lastfm/pull/423) thanks to @renovate[bot]
 
-### Fixed
+#### Enhancement
 
-- Nothing.
+ - [430: Sync tool config ](https://github.com/nucleos/lastfm/pull/430) thanks to @core23
+ - [429: Remove infection testing ](https://github.com/nucleos/lastfm/pull/429) thanks to @core23
+ - [427: Remove psalm in favor of phpstan ](https://github.com/nucleos/lastfm/pull/427) thanks to @core23
 
 ## 3.6.0 - 2023-12-21
 
