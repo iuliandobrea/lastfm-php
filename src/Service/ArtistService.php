@@ -68,7 +68,11 @@ final class ArtistService implements ArtistServiceInterface
 
     public function getInfo(ArtistInfoBuilder $builder): ?ArtistInfo
     {
-        $response = $this->client->unsignedCall('artist.getInfo', $builder->getQuery());
+        try {
+            $response = $this->client->unsignedCall('artist.getInfo', $builder->getQuery());
+        } catch (\Nucleos\LastFm\Exception\NotFoundException $e) {
+            return null;
+        }
 
         if (!isset($response['artist'])) {
             return null;
