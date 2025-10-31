@@ -173,7 +173,7 @@ final class ArtistService implements ArtistServiceInterface
             'page'   => $page,
         ]);
 
-        if (!isset($response['results']['artistmatches']['artist'])) {
+        if (empty($response['results']['artistmatches']['artist'])) {
             return [];
         }
 
