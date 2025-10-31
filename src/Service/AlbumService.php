@@ -106,15 +106,24 @@ final class AlbumService implements AlbumServiceInterface
             'page'  => $page,
         ]);
 
-        if (!isset($response['results']['albummatches']['album'])) {
+        $albumMatches = $response['results']['albummatches']['album'] ?? null;
+
+        if (!isset($albumMatches)) {
             return [];
         }
+
+        \array_walk(
+            $albumMatches,
+            function (&$item) {
+                $item['artist'] = \is_string($item['artist']) ? ['name' => $item['artist']] : $item['artist'];
+            }
+        );
 
         return ApiHelper::mapList(
             static function (array $data): Album {
                 return Album::fromApi($data);
             },
-            $response['results']['albummatches']['album']
+            $albumMatches
         );
     }
 }
