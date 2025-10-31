@@ -145,8 +145,8 @@ final class AlbumInfo
             $data['mbid'] ?? null,
             $data['url']  ?? null,
             $images,
-            $data['listeners'] ?? 0,
-            $data['playcount'] ?? 0,
+            (int)($data['listeners'] ?? 0),
+            (int)($data['playcount'] ?? 0),
             $tracks,
             $tags,
             $data['wiki']['summary'] ?? null
