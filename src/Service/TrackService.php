@@ -68,7 +68,11 @@ final class TrackService implements TrackServiceInterface
 
     public function getInfo(TrackInfoBuilder $builder): ?SongInfo
     {
-        $response = $this->client->unsignedCall('track.getInfo', $builder->getQuery());
+        try {
+            $response = $this->client->unsignedCall('track.getInfo', $builder->getQuery());
+        } catch (\Nucleos\LastFm\Exception\NotFoundException $e) {
+            return null;
+        }
 
         if (!isset($response['track'])) {
             return null;
