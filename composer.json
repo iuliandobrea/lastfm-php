@@ -1,5 +1,5 @@
 {
-    "name": "nucleos/lastfm",
+    "name": "iuliandobrea/lastfm-php",
     "description": "Last.fm webservice client for php.",
     "license": "MIT",
     "type": "library",
