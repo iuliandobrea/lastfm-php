@@ -18,7 +18,7 @@ This library provides a wrapper for using the [Last.fm API] inside PHP.
 Open a command console, enter your project directory and execute the following command to download the latest stable version of this library:
 
 ```
-composer require nucleos/lastfm
+composer require iuliandobrea/lastfm-php
 # To define a default http client and message factory
 composer require symfony/http-client nyholm/psr7
 ```
@@ -26,22 +26,56 @@ composer require symfony/http-client nyholm/psr7
 ## Usage
 
 ```php
-// Create connection
-use Nucleos\LastFm\Service\AuthService;
-use Nucleos\LastFm\Service\ChartService;
-use Nucleos\LastFm\Service\PsrClientConnection;
+# Create a client
+$apiClient = new \Nucleos\LastFm\Client\ApiClient(
+    new \Nucleos\LastFm\Connection\PsrClientConnection(
+        new \GuzzleHttp\Client(),
+        new \Http\Discovery\Psr17Factory()
+    ),
+    'API_KEY',
+    'SHARED_SECRET'
+);
 
-$connection = new PsrClientConnection($httpClient, $requestFactory);
+# searching for artist
+$artistName = 'Shakira';
+$artistApi = new \Nucleos\LastFm\Service\ArtistService($apiClient);
+$artistSearchResult = $artistApi->search($artistName, 5);
 
-// Auth user to get a token
-// http://www.last.fm/api/auth/?api_key=API_KEY
+foreach ($artistSearchResult as $eachArtist) {
+    if (empty($eachArtist)) {
+        continue;
+    }
 
-// Create a session (with generated token)
-$token = 'API token';
-$authApi = new AuthService($connection);
-$session = $authApi->createSession($token);
+    $artistId = $eachArtist->getMbid();
+    break;
+}
 
-$chartApi = new ChartService($connection);
+# from $artistSearchResult we can obtain $artistId and keep/cache it for future requests
+
+$artistResult = $artistApi->getInfo(
+    \Nucleos\LastFm\Builder\ArtistInfoBuilder::forMbid($artistId)
+);
+
+# searching for albums
+$albumApi = new \Nucleos\LastFm\Service\AlbumService($apiClient);
+$albumSearchResult = $albumApi->search($albumTitle, 10);
+
+$albumGetInfoResult = $albumApi->getInfo(
+    \Nucleos\LastFm\Builder\AlbumInfoBuilder::forAlbum($artistName, $albumTitle)
+);
+
+$albumGetInfoResult = $albumApi->getInfo(
+    \Nucleos\LastFm\Builder\AlbumInfoBuilder::forMbid($albumId)
+);
+
+# search for records
+$trackApi = new \Nucleos\LastFm\Service\TrackService($apiClient);
+$result = $trackApi->getInfo(
+    \Nucleos\LastFm\Builder\TrackInfoBuilder::forMbid($recordingId)
+);
+
+#
+$chartApi = new \Nucleos\LastFm\Service\ChartService($apiClient);
 $tags = $chartApi->getTopTags(10);
 ```
 
