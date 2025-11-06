@@ -18,7 +18,7 @@ interface ConnectionInterface
     /**
      * Default Endpoint.
      */
-    public const DEFAULT_ENDPOINT = 'http://ws.audioscrobbler.com/2.0/';
+    public const DEFAULT_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
 
     /**
      * Calls the API.

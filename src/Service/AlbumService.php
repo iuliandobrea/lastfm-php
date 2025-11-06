@@ -50,9 +50,17 @@ final class AlbumService implements AlbumServiceInterface
         ], $session, 'POST');
     }
 
-    public function getInfo(AlbumInfoBuilder $builder): AlbumInfo
+    public function getInfo(AlbumInfoBuilder $builder): ?AlbumInfo
     {
-        $response = $this->client->unsignedCall('album.getInfo', $builder->getQuery());
+        try {
+            $response = $this->client->unsignedCall('album.getInfo', $builder->getQuery());
+        } catch (\Nucleos\LastFm\Exception\NotFoundException $e) {
+            return null;
+        }
+
+        if (!isset($response['album'])) {
+            return null;
+        }
 
         return AlbumInfo::fromApi($response['album']);
     }

@@ -71,8 +71,8 @@ final class Album
         $images = self::createImagesFromApi($data);
 
         return new self(
-            $data['name'],
-            $data['artist'] ? Artist::fromApi($data['artist']) : null,
+            $data['name'] ?? '',
+            isset($data['artist']) ? Artist::fromApi($data['artist']) : null,
             $data['mbid'] ?? null,
             $data['url']  ?? null,
             $images
@@ -83,8 +83,8 @@ final class Album
     {
         $images = [];
 
-        if (\array_key_exists('image', $data)) {
-            foreach ((array) $data['image'] as $image) {
+        if (isset($data['image']) && \is_array($data['image'])) {
+            foreach ($data['image'] as $image) {
                 $images[] = new Image($image['#text']);
             }
         }

@@ -43,12 +43,10 @@ final class Song
 
     public static function fromApi(array $data): self
     {
-        $artist = isset($data['artist']) ? Artist::fromApi($data['artist']) : null;
-
         return new self(
-            $data['name'],
-            isset($data['duration']) ? (int) $data['duration'] : null,
-            $artist
+            $data['name'] ?? '',
+            isset($data['duration']) ? (int)$data['duration'] : null,
+            isset($data['artist']) ? Artist::fromApi($data['artist']) : null
         );
     }
 }

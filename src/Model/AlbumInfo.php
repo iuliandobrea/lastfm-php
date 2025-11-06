@@ -157,8 +157,8 @@ final class AlbumInfo
     {
         $images = [];
 
-        if (\array_key_exists('image', $data)) {
-            foreach ((array) $data['image'] as $image) {
+        if (isset($data['image']) && \is_array($data['image'])) {
+            foreach ($data['image'] as $image) {
                 $images[] = new Image($image['#text']);
             }
         }
@@ -170,10 +170,19 @@ final class AlbumInfo
     {
         $tracks = [];
 
-        if (\array_key_exists('tracks', $data) && \array_key_exists('track', $data['tracks'])) {
-            foreach ((array) $data['tracks']['track'] as $track) {
+        // data['tracks']['track'] can be:
+        // array of multiple track elements > Example: https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=API_KEY&mbid=87f72085-bdd9-4eba-acbd-3f92c4c98aa9&format=json
+        // single track element > Example: https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=API_KEY&mbid=51ca0481-d5b6-49e2-a5db-e9b920ebc074&format=json
+        if (isset($data['tracks']['track'][0])) {
+            foreach ($data['tracks']['track'] as $track) {
+                if (!\is_array($track)) {
+                    continue;
+                }
+
                 $tracks[] = Song::fromApi($track);
             }
+        } elseif (!empty($data['tracks']['track'])) {
+            $tracks[] = Song::fromApi($data['tracks']['track']);
         }
 
         return $tracks;
@@ -183,8 +192,12 @@ final class AlbumInfo
     {
         $tags = [];
 
-        if (\array_key_exists('tags', $data) && \array_key_exists('tag', $data['tags'])) {
-            foreach ((array) $data['tags']['tag'] as $tag) {
+        if (isset($data['tags']['tag']) && \is_array($data['tags']['tag'])) {
+            foreach ($data['tags']['tag'] as $tag) {
+                if (!\is_array($tag)) {
+                    continue;
+                }
+
                 $tags[] = Tag::fromApi($tag);
             }
         }

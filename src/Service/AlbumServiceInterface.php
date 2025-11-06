@@ -41,7 +41,7 @@ interface AlbumServiceInterface
      * @throws NotFoundException
      * @throws ApiException
      */
-    public function getInfo(AlbumInfoBuilder $builder): AlbumInfo;
+    public function getInfo(AlbumInfoBuilder $builder): ?AlbumInfo;
 
     /**
      * Get the tags applied by an individual user to an album on Last.fm.
